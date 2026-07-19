@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+:root {
+  --background: 249 250 251;
+  --foreground: 17 24 39;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: rgb(249 250 251);
+  color: rgb(17 24 39);
+}
+
+/* Focus ring — visible on keyboard only */
+:focus-visible {
+  outline: 2px solid rgb(99 102 241);
+  outline-offset: 2px;
+}
+
+/* Skeleton animation */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.skeleton {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+  background-color: rgb(229 231 235);
+  border-radius: 4px;
+}
