@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Sidebar } from "@/components/layout/sidebar";
-import { CommandPalette } from "@/components/command-palette";
+import { AppShell } from "@/components/layout/app-shell";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -16,10 +16,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         userName={session.user.name ?? "User"}
         userEmail={session.user.email ?? ""}
       />
-      <main className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-950">
+      <AppShell role={role}>
         {children}
-      </main>
-      <CommandPalette role={role} />
+      </AppShell>
     </div>
   );
 }
