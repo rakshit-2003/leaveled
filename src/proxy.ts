@@ -1,10 +1,15 @@
-import { auth } from "@/lib/auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-export default auth((req) => {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const isAuthenticated = !!req.auth?.user;
 
+  const token = await getToken({
+    req,
+    secret: process.env.AUTH_SECRET,
+  });
+
+  const isAuthenticated = !!token;
   const publicPaths = ["/login", "/register", "/api/auth"];
   const isPublic = publicPaths.some((p) => pathname.startsWith(p));
 
@@ -17,7 +22,7 @@ export default auth((req) => {
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.png$).*)"],
