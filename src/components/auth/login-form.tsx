@@ -23,12 +23,19 @@ export function LoginForm() {
   });
 
   const onSubmit = async (data: LoginInput) => {
-    await signIn("credentials", {
+    const result = await signIn("credentials", {
       email: data.email,
       password: data.password,
-      redirect: true,
-      callbackUrl: "/dashboard",
+      redirect: false,
     });
+
+    if (!result || result.error) {
+      toast.error("Invalid email or password.");
+      return;
+    }
+
+    // Hard navigate — bypasses any client-side router issues
+    window.location.href = "/dashboard";
   };
 
   return (
