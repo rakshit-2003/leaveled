@@ -4,7 +4,7 @@
 
 A full-stack web application where employees submit leave requests and managers approve or reject them — with real-time balance tracking, role-based access, and a clean dashboard.
 
-**Live demo → https://leaveled.vercel.app** *(deploy URL — update after deployment)*
+**Live demo → https://leaveled-8h32-rho.vercel.app**
 
 ---
 
