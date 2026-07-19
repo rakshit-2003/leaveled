@@ -17,14 +17,9 @@ interface CommandPaletteProps {
 
 export function CommandPalette({ role, onNewRequest }: CommandPaletteProps) {
   const [open, setOpen] = useState(false);
-  const [isDark, setIsDark] = useState(false);
   const router = useRouter();
-  const { toggle } = useTheme();
+  const { isDark, toggle } = useTheme();
   const isAdmin = role === "ADMIN" || role === "MANAGER";
-
-  useEffect(() => {
-    setIsDark(document.documentElement.classList.contains("dark"));
-  }, [open]);
 
   const down = useCallback((e: KeyboardEvent) => {
     if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || e.key === "/") {
@@ -110,7 +105,7 @@ export function CommandPalette({ role, onNewRequest }: CommandPaletteProps) {
               )}
               <Command.Item
                 value="toggle dark light mode"
-                onSelect={() => run(() => { toggle(); setIsDark(v => !v); })}
+                onSelect={() => run(() => toggle())}
                 className="flex items-center gap-3 px-2 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 cursor-pointer aria-selected:bg-indigo-50 dark:aria-selected:bg-indigo-950 aria-selected:text-indigo-700 dark:aria-selected:text-indigo-300 transition-colors"
               >
                 {isDark ? <Sun className="h-4 w-4 shrink-0" /> : <Moon className="h-4 w-4 shrink-0" />}

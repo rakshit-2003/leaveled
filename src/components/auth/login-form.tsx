@@ -29,12 +29,14 @@ export function LoginForm() {
       redirect: false,
     });
 
-    if (!result || result.error) {
+    // v5 beta returns { ok, error, status, url }
+    // ok=true means success, error is set on failure
+    if (result && !result.ok) {
       toast.error("Invalid email or password.");
       return;
     }
 
-    // Hard navigate — bypasses any client-side router issues
+    // Success — hard navigate to bypass any router issues
     window.location.href = "/dashboard";
   };
 

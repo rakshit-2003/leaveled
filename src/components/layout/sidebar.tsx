@@ -9,7 +9,6 @@ import {
 import { cn } from "@/lib/utils";
 import { signOut } from "next-auth/react";
 import { useTheme } from "@/components/theme-provider";
-import { useState, useEffect } from "react";
 
 interface NavItem {
   href: string;
@@ -19,12 +18,12 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { href: "/dashboard",       label: "Dashboard",        icon: LayoutDashboard },
-  { href: "/requests",        label: "My Requests",      icon: ClipboardList },
-  { href: "/calendar",        label: "Calendar",         icon: CalendarDays },
-  { href: "/admin/requests",  label: "Manage Requests",  icon: ClipboardList, adminOnly: true },
-  { href: "/admin/users",     label: "Employees",        icon: Users,         adminOnly: true },
-  { href: "/admin/leave-types", label: "Leave Types",   icon: Settings,      adminOnly: true },
+  { href: "/dashboard",         label: "Dashboard",       icon: LayoutDashboard },
+  { href: "/requests",          label: "My Requests",     icon: ClipboardList },
+  { href: "/calendar",          label: "Calendar",        icon: CalendarDays },
+  { href: "/admin/requests",    label: "Manage Requests", icon: ClipboardList, adminOnly: true },
+  { href: "/admin/users",       label: "Employees",       icon: Users,         adminOnly: true },
+  { href: "/admin/leave-types", label: "Leave Types",     icon: Settings,      adminOnly: true },
 ];
 
 interface SidebarProps {
@@ -35,23 +34,13 @@ interface SidebarProps {
 
 export function Sidebar({ role, userName, userEmail }: SidebarProps) {
   const pathname = usePathname();
-  const { toggle } = useTheme();
-  const [isDark, setIsDark] = useState(false);
+  const { isDark, toggle } = useTheme();
   const isAdmin = role === "ADMIN" || role === "MANAGER";
   const visible = navItems.filter((item) => !item.adminOnly || isAdmin);
 
-  useEffect(() => {
-    setIsDark(document.documentElement.classList.contains("dark"));
-  }, []);
-
-  const handleToggle = () => {
-    toggle();
-    setIsDark((v) => !v);
-  };
-
   return (
     <aside className="flex h-screen w-60 flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shrink-0">
-      {/* Logo + palette hint */}
+      {/* Logo */}
       <div className="flex items-center gap-2 px-6 py-5 border-b border-gray-100 dark:border-gray-800">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600">
           <Palmtree className="h-4 w-4 text-white" />
@@ -84,9 +73,9 @@ export function Sidebar({ role, userName, userEmail }: SidebarProps) {
 
       {/* Bottom */}
       <div className="border-t border-gray-100 dark:border-gray-800 p-3 space-y-0.5">
-        {/* Dark mode toggle */}
+        {/* Dark mode toggle — reads isDark from context, always in sync */}
         <button
-          onClick={handleToggle}
+          onClick={toggle}
           className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
           aria-label="Toggle dark mode"
         >

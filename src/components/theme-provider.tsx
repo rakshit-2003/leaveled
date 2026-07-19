@@ -1,45 +1,45 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext, useContext } from "react";
+
+interface ThemeContextType {
+  isDark: boolean;
+  toggle: () => void;
+}
+
+const ThemeContext = createContext<ThemeContextType>({
+  isDark: false,
+  toggle: () => {},
+});
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = useState(false);
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    // Apply theme from localStorage or system preference
-    const saved = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (saved === "dark" || (!saved && prefersDark)) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    // Listen for system changes
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const handler = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem("theme")) {
-        document.documentElement.classList.toggle("dark", e.matches);
-      }
-    };
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
+    // Read initial state from DOM (set by inline script before hydration)
+    const dark = document.documentElement.classList.contains("dark");
+    setIsDark(dark);
   }, []);
 
-  if (!mounted) return <>{children}</>;
-  return <>{children}</>;
+  const toggle = () => {
+    const next = !isDark;
+    setIsDark(next);
+    if (next) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  };
+
+  return (
+    <ThemeContext.Provider value={{ isDark, toggle }}>
+      {children}
+    </ThemeContext.Provider>
+  );
 }
 
 export function useTheme() {
-  const toggle = () => {
-    const isDark = document.documentElement.classList.contains("dark");
-    if (isDark) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    }
-  };
-  return { toggle };
+  return useContext(ThemeContext);
 }
