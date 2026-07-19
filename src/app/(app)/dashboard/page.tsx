@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { BalanceCards } from "@/components/dashboard/balance-cards";
 import { RecentRequests } from "@/components/dashboard/recent-requests";
+import { LeaveChart } from "@/components/dashboard/leave-chart";
 import { NewRequestButton } from "@/components/leave/new-request-button";
 
 export const metadata: Metadata = { title: "Dashboard" };
@@ -28,6 +29,13 @@ export default async function DashboardPage() {
     }),
   ]);
 
+  const chartData = balances.map((b) => ({
+    name: b.leaveType.name.split(" ")[0], // short label
+    allocated: b.allocated,
+    used: b.used,
+    color: b.leaveType.color,
+  }));
+
   const userName = session.user.name?.split(" ")[0] ?? "there";
 
   return (
@@ -35,10 +43,10 @@ export default async function DashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-gray-900">
+          <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
             Good {getGreeting()}, {userName} 👋
           </h1>
-          <p className="text-sm text-gray-500 mt-0.5">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
             Here&apos;s your leave overview for {year}
           </p>
         </div>
@@ -48,15 +56,18 @@ export default async function DashboardPage() {
       {/* Balance cards */}
       <BalanceCards balances={balances} />
 
-      {/* Recent requests */}
-      <RecentRequests requests={recentRequests} />
+      {/* Chart + Recent requests side by side on large screens */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <LeaveChart data={chartData} />
+        <RecentRequests requests={recentRequests} />
+      </div>
     </div>
   );
 }
 
 function getGreeting() {
-  const hour = new Date().getHours();
-  if (hour < 12) return "morning";
-  if (hour < 17) return "afternoon";
+  const h = new Date().getHours();
+  if (h < 12) return "morning";
+  if (h < 17) return "afternoon";
   return "evening";
 }

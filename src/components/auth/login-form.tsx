@@ -93,8 +93,8 @@ export function LoginForm() {
         )}
       </Button>
 
-      <div className="mt-2 rounded-lg bg-gray-50 p-3 text-xs text-gray-500 border border-gray-100">
-        <p className="font-medium text-gray-600 mb-1">Demo credentials</p>
+      <div className="mt-2 rounded-lg bg-gray-50 dark:bg-gray-800 p-3 text-xs text-gray-500 dark:text-gray-400 border border-gray-100 dark:border-gray-700">
+        <p className="font-medium text-gray-600 dark:text-gray-300 mb-1">Demo credentials</p>
         <p>Email: <span className="font-mono">demo@demo.com</span></p>
         <p>Password: <span className="font-mono">Demo1234</span></p>
       </div>

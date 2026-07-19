@@ -81,14 +81,14 @@ export function NewRequestDialog({
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/40 z-40 animate-in fade-in" />
-        <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl border border-gray-200 bg-white p-6 shadow-xl animate-in fade-in slide-in-from-bottom-4">
+        <Dialog.Overlay className="fixed inset-0 bg-black/50 dark:bg-black/70 z-40 animate-in fade-in" />
+        <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 shadow-xl animate-in fade-in slide-in-from-bottom-4">
           <div className="flex items-center justify-between mb-5">
-            <Dialog.Title className="text-base font-semibold text-gray-900">
+            <Dialog.Title className="text-base font-semibold text-gray-900 dark:text-white">
               New Leave Request
             </Dialog.Title>
             <Dialog.Close asChild>
-              <button className="text-gray-400 hover:text-gray-600 rounded-md p-0.5 focus-visible:ring-2 focus-visible:ring-indigo-500">
+              <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-md p-0.5 focus-visible:ring-2 focus-visible:ring-indigo-500">
                 <X className="h-4 w-4" />
               </button>
             </Dialog.Close>
@@ -148,7 +148,7 @@ export function NewRequestDialog({
             </div>
 
             {workingDays > 0 && (
-              <p className="text-xs text-indigo-600 bg-indigo-50 rounded-md px-3 py-2">
+              <p className="text-xs text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950 rounded-md px-3 py-2">
                 {workingDays} working day{workingDays !== 1 ? "s" : ""} selected
               </p>
             )}

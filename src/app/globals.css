@@ -1,37 +1,38 @@
 @import "tailwindcss";
 
-:root {
-  --background: 249 250 251;
-  --foreground: 17 24 39;
-}
+* { box-sizing: border-box; }
 
-* {
-  box-sizing: border-box;
-}
+html { scroll-behavior: smooth; }
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background-color: rgb(249 250 251);
-  color: rgb(17 24 39);
-}
-
-/* Focus ring — visible on keyboard only */
 :focus-visible {
   outline: 2px solid rgb(99 102 241);
   outline-offset: 2px;
 }
 
-/* Skeleton animation */
 @keyframes skeleton-pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  50% { opacity: 0.45; }
 }
 
-.skeleton {
+.animate-pulse {
   animation: skeleton-pulse 1.5s ease-in-out infinite;
-  background-color: rgb(229 231 235);
-  border-radius: 4px;
+}
+
+/* Animate-in utilities for dialogs */
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slide-in-from-bottom {
+  from { transform: translateY(8px); opacity: 0; }
+  to   { transform: translateY(0);   opacity: 1; }
+}
+
+.animate-in { animation-fill-mode: both; }
+.fade-in    { animation: fade-in 150ms ease-out; }
+.slide-in-from-bottom-4 { animation: slide-in-from-bottom 200ms cubic-bezier(0.4,0,0.2,1); }
+
+/* Prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
