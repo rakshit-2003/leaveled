@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
+import type { LeaveType } from "@prisma/client";
 
 export const metadata: Metadata = { title: "Leave Types" };
 
@@ -10,7 +11,7 @@ export default async function LeaveTypesPage() {
   const role = (session?.user as any)?.role;
   if (!session?.user?.id || role !== "ADMIN") redirect("/dashboard");
 
-  const leaveTypes = await db.leaveType.findMany({ orderBy: { name: "asc" } });
+  const leaveTypes: LeaveType[] = await db.leaveType.findMany({ orderBy: { name: "asc" } });
 
   return (
     <div className="p-6 max-w-3xl mx-auto space-y-6">
