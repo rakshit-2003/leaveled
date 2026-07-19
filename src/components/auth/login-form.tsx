@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { loginSchema, type LoginInput } from "@/lib/validators";
 import { Button } from "@/components/ui/button";
@@ -13,7 +12,6 @@ import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 export function LoginForm() {
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -25,20 +23,12 @@ export function LoginForm() {
   });
 
   const onSubmit = async (data: LoginInput) => {
-    const result = await signIn("credentials", {
+    await signIn("credentials", {
       email: data.email,
       password: data.password,
-      redirect: false,
+      redirect: true,
+      callbackUrl: "/dashboard",
     });
-
-    if (result?.error) {
-      toast.error("Invalid email or password.");
-      return;
-    }
-
-    toast.success("Signed in successfully.");
-    router.push("/dashboard");
-    router.refresh();
   };
 
   return (
